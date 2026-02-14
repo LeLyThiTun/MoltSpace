@@ -1,0 +1,20 @@
+{
+  "name": "moltspace",
+  "version": "1.0.0",
+  "description": "MoltSpace - Space Mining Game on Monad Blockchain",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "deploy:local": "npx hardhat run scripts/deploy.js --network hardhat",
+    "deploy:testnet": "npx hardhat run scripts/deploy.js --network monad-testnet",
+    "deploy:mainnet": "npx hardhat run scripts/deploy.js --network monad-mainnet"
+  },
+  "keywords": ["monad", "blockchain", "game", "nft", "erc1155", "play-to-earn"],
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^5.0.0",
+    "dotenv": "^16.4.0",
+    "hardhat": "^2.19.0"
+  }
+}

@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+out/
+artifacts/
+cache/
+typechain-types/
+
+# Environment files (contain secrets)
+.env
+.env.local
+contracts/.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Hardhat
+*.tsbuildinfo
+
+# Claude Code
+.claude/
+
+# Misc
+nul
