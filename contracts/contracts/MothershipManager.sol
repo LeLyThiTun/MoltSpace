@@ -447,4 +447,26 @@ contract MothershipManager is Ownable, IMothershipManager {
         if (level <= 24) return 5;
         return 6; // level 25
     }
+
+    // ═══════════════════════════════════════════
+    //  Admin: Emergency Withdraw
+    // ═══════════════════════════════════════════
+
+    /**
+     * @notice Emergency withdraw MON from this contract (admin only).
+     * @param to      Recipient address
+     * @param amount  Amount to withdraw (in wei). Use 0 to withdraw all.
+     */
+    function emergencyWithdraw(address to, uint256 amount) external onlyOwner {
+        require(to != address(0), "MothershipMgr: zero address");
+        uint256 toSend = amount == 0 ? address(this).balance : amount;
+        require(toSend <= address(this).balance, "MothershipMgr: insufficient balance");
+        (bool sent, ) = payable(to).call{value: toSend}("");
+        require(sent, "MothershipMgr: withdraw failed");
+        emit EmergencyWithdrawn(to, toSend);
+    }
+
+    event EmergencyWithdrawn(address indexed to, uint256 amount);
+
+    receive() external payable {}
 }

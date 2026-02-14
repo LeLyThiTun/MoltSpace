@@ -497,9 +497,13 @@ function Footer() {
       <div className="divider-glow mb-8" />
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-nebula-500 to-accent-fuchsia flex items-center justify-center">
-            <Rocket className="w-3 h-3 text-white" />
-          </div>
+          <Image
+            src="/image/logo/logo.jpg"
+            alt="MoltSpace Logo"
+            width={24}
+            height={24}
+            className="w-6 h-6 rounded-lg object-cover"
+          />
           <span className="font-display font-bold text-sm text-gray-500">
             MOLT<span className="text-nebula-400">SPACE</span>
           </span>

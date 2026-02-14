@@ -13,7 +13,7 @@ import "./interfaces/IMoltSpaceNFT.sol";
  *         $MON is Monad's native token — mint costs are paid via msg.value.
  *
  *  Mint costs:  Scout Ship = 20 MON, Explorer = 10 MON  (fixed, rarity is random)
- *  Burn refund: 30% of mint cost (6 MON / 3 MON)
+ *  Burn refund: 20% of mint cost (4 MON / 2 MON)
  */
 contract MoltSpaceNFT is ERC1155, Ownable, ReentrancyGuard, IMoltSpaceNFT {
 
@@ -23,7 +23,7 @@ contract MoltSpaceNFT is ERC1155, Ownable, ReentrancyGuard, IMoltSpaceNFT {
 
     uint256 public constant SCOUT_SHIP_COST = 20 ether; // 20 MON
     uint256 public constant EXPLORER_COST   = 10 ether; // 10 MON
-    uint256 public constant BURN_REFUND_BPS = 3000;      // 30% in basis points
+    uint256 public constant BURN_REFUND_BPS = 2000;      // 20% in basis points
 
     // Drop rate thresholds (cumulative, out of 100)
     // 5★=1%, 4★=5%, 3★=15%, 2★=35%, 1★=44%  → cumulative: 1, 6, 21, 56, 100
@@ -144,12 +144,12 @@ contract MoltSpaceNFT is ERC1155, Ownable, ReentrancyGuard, IMoltSpaceNFT {
     }
 
     // ═══════════════════════════════════════════
-    //  Burn (30% refund)
+    //  Burn (20% refund)
     // ═══════════════════════════════════════════
 
     /**
-     * @notice Burn an NFT and receive 30% of mint cost back in $MON.
-     *         Scout Ship refund: 6 MON, Explorer refund: 3 MON.
+     * @notice Burn an NFT and receive 20% of mint cost back in $MON.
+     *         Scout Ship refund: 4 MON, Explorer refund: 2 MON.
      * @param tokenId The token to burn
      */
     function burn(uint256 tokenId) external nonReentrant {
@@ -159,9 +159,9 @@ contract MoltSpaceNFT is ERC1155, Ownable, ReentrancyGuard, IMoltSpaceNFT {
 
         uint256 refund;
         if (_stats[tokenId].tokenType == TokenType.SCOUT_SHIP) {
-            refund = (SCOUT_SHIP_COST * BURN_REFUND_BPS) / 10000; // 6 MON
+            refund = (SCOUT_SHIP_COST * BURN_REFUND_BPS) / 10000; // 4 MON
         } else {
-            refund = (EXPLORER_COST * BURN_REFUND_BPS) / 10000;   // 3 MON
+            refund = (EXPLORER_COST * BURN_REFUND_BPS) / 10000;   // 2 MON
         }
 
         // Burn the token
@@ -269,6 +269,26 @@ contract MoltSpaceNFT is ERC1155, Ownable, ReentrancyGuard, IMoltSpaceNFT {
         }
         super._update(from, to, ids, values);
     }
+
+    // ═══════════════════════════════════════════
+    //  Admin: Emergency Withdraw
+    // ═══════════════════════════════════════════
+
+    /**
+     * @notice Emergency withdraw MON from this contract (admin only).
+     * @param to      Recipient address
+     * @param amount  Amount to withdraw (in wei). Use 0 to withdraw all.
+     */
+    function emergencyWithdraw(address to, uint256 amount) external onlyOwner nonReentrant {
+        require(to != address(0), "MoltSpaceNFT: zero address");
+        uint256 toSend = amount == 0 ? address(this).balance : amount;
+        require(toSend <= address(this).balance, "MoltSpaceNFT: insufficient balance");
+        (bool sent, ) = payable(to).call{value: toSend}("");
+        require(sent, "MoltSpaceNFT: withdraw failed");
+        emit EmergencyWithdrawn(to, toSend);
+    }
+
+    event EmergencyWithdrawn(address indexed to, uint256 amount);
 
     // ═══════════════════════════════════════════
     //  Receive $MON

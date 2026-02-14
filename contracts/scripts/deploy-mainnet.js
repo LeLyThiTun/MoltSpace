@@ -123,7 +123,7 @@ async function main() {
   console.log("╠═══════════════════════════════════════════════╣");
   console.log("║  Scout Ship cost:    20 MON");
   console.log("║  Explorer cost:      10 MON");
-  console.log("║  Burn refund:        30%");
+  console.log("║  Burn refund:        20%");
   console.log("║  Max batch size:     20");
   console.log("║  Cooldown:           12 hours");
   console.log("╠═══════════════════════════════════════════════╣");

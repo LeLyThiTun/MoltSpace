@@ -138,15 +138,15 @@ describe("ExpeditionManager", function () {
       }
     });
 
-    it("Planet 1: reward 5 MON, required MP 50", async function () {
+    it("Planet 1: reward 3.5 MON, required MP 50", async function () {
       const p = await expeditionMgr.getPlanetConfig(1);
-      expect(p.baseReward).to.equal(ethers.parseEther("5"));
+      expect(p.baseReward).to.equal(ethers.parseEther("3.5"));
       expect(p.requiredMP).to.equal(ethers.parseEther("50"));
     });
 
-    it("Planet 30: reward 30000 MON, required MP 12000", async function () {
+    it("Planet 30: reward 1125 MON, required MP 12000", async function () {
       const p = await expeditionMgr.getPlanetConfig(30);
-      expect(p.baseReward).to.equal(ethers.parseEther("30000"));
+      expect(p.baseReward).to.equal(ethers.parseEther("1125"));
       expect(p.requiredMP).to.equal(ethers.parseEther("12000"));
     });
   });
@@ -375,14 +375,14 @@ describe("ExpeditionManager", function () {
       expect(p30.baseReward).to.be.gt(p10.baseReward);
     });
 
-    it("base reward for Planet 1 = 5 MON", async function () {
+    it("base reward for Planet 1 = 3.5 MON", async function () {
       const p = await expeditionMgr.getPlanetConfig(1);
-      expect(p.baseReward).to.equal(ethers.parseEther("5"));
+      expect(p.baseReward).to.equal(ethers.parseEther("3.5"));
     });
 
-    it("base reward for Planet 30 = 30000 MON", async function () {
+    it("base reward for Planet 30 = 1125 MON", async function () {
       const p = await expeditionMgr.getPlanetConfig(30);
-      expect(p.baseReward).to.equal(ethers.parseEther("30000"));
+      expect(p.baseReward).to.equal(ethers.parseEther("1125"));
     });
   });
 

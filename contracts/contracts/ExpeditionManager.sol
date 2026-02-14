@@ -242,43 +242,43 @@ contract ExpeditionManager is Ownable, ReentrancyGuard, IExpeditionManager {
     // ═══════════════════════════════════════════
 
     function _initPlanets() internal {
-        // Zone 1: Planets 1-10, Suggested Rank C (2)
-        _setPlanet( 1, 1, 2,    50 ether,     5 ether);
-        _setPlanet( 2, 1, 2,    80 ether,    10 ether);
-        _setPlanet( 3, 1, 2,   120 ether,    15 ether);
-        _setPlanet( 4, 1, 2,   170 ether,    20 ether);
-        _setPlanet( 5, 1, 2,   230 ether,    30 ether);
-        _setPlanet( 6, 1, 2,   300 ether,    75 ether);
-        _setPlanet( 7, 1, 2,   380 ether,    90 ether);
-        _setPlanet( 8, 1, 2,   480 ether,   110 ether);
-        _setPlanet( 9, 1, 2,   600 ether,   135 ether);
-        _setPlanet(10, 1, 2,   750 ether,   165 ether);
+        // Zone 1: Planets 1-10, Suggested Rank C (2) — Target ROI ≥ 7 days
+        _setPlanet( 1, 1, 2,    50 ether,   3.5 ether);
+        _setPlanet( 2, 1, 2,    80 ether,   3.5 ether);
+        _setPlanet( 3, 1, 2,   120 ether,   3.5 ether);
+        _setPlanet( 4, 1, 2,   170 ether,     7 ether);
+        _setPlanet( 5, 1, 2,   230 ether,     7 ether);
+        _setPlanet( 6, 1, 2,   300 ether,    10 ether);
+        _setPlanet( 7, 1, 2,   380 ether,    10 ether);
+        _setPlanet( 8, 1, 2,   480 ether,  13.5 ether);
+        _setPlanet( 9, 1, 2,   600 ether,    17 ether);
+        _setPlanet(10, 1, 2,   750 ether,    20 ether);
 
-        // Zone 2: Planets 11-20, Suggested Rank B (3)
-        _setPlanet(11, 2, 3,   950 ether,   400 ether);
-        _setPlanet(12, 2, 3,  1200 ether,   475 ether);
-        _setPlanet(13, 2, 3,  1500 ether,   565 ether);
-        _setPlanet(14, 2, 3,  1900 ether,   675 ether);
-        _setPlanet(15, 2, 3,  2400 ether,   800 ether);
-        _setPlanet(16, 2, 3,  3000 ether,  1900 ether);
-        _setPlanet(17, 2, 3,  3700 ether,  2250 ether);
-        _setPlanet(18, 2, 3,  4500 ether,  2700 ether);
-        _setPlanet(19, 2, 3,  5400 ether,  3250 ether);
-        _setPlanet(20, 2, 3,  6400 ether,  3900 ether);
+        // Zone 2: Planets 11-20, Suggested Rank B (3) — Target ROI ≥ 7 days
+        _setPlanet(11, 2, 3,   950 ether,    40 ether);
+        _setPlanet(12, 2, 3,  1200 ether,    50 ether);
+        _setPlanet(13, 2, 3,  1500 ether,    60 ether);
+        _setPlanet(14, 2, 3,  1900 ether,    75 ether);
+        _setPlanet(15, 2, 3,  2400 ether,    95 ether);
+        _setPlanet(16, 2, 3,  3000 ether,   120 ether);
+        _setPlanet(17, 2, 3,  3700 ether,   145 ether);
+        _setPlanet(18, 2, 3,  4500 ether,   175 ether);
+        _setPlanet(19, 2, 3,  5400 ether,   210 ether);
+        _setPlanet(20, 2, 3,  6400 ether,   250 ether);
 
-        // Zone 3: Planets 21-25, Suggested Rank A (4)
-        _setPlanet(21, 3, 4,  7500 ether,  5000 ether);
-        _setPlanet(22, 3, 4,  8500 ether,  6000 ether);
-        _setPlanet(23, 3, 4,  9500 ether,  7000 ether);
-        _setPlanet(24, 3, 4, 10500 ether,  8000 ether);
-        _setPlanet(25, 3, 4, 11000 ether, 10000 ether);
+        // Zone 3: Planets 21-25, Suggested Rank A (4) — Target ROI ~3 days
+        _setPlanet(21, 3, 4,  7500 ether,   715 ether);
+        _setPlanet(22, 3, 4,  8500 ether,   810 ether);
+        _setPlanet(23, 3, 4,  9500 ether,   910 ether);
+        _setPlanet(24, 3, 4, 10500 ether,  1010 ether);
+        _setPlanet(25, 3, 4, 11000 ether,  1060 ether);
 
-        // Zone 4: Planets 26-30, Suggested Rank S (5)
-        _setPlanet(26, 4, 5, 11300 ether, 12000 ether);
-        _setPlanet(27, 4, 5, 11600 ether, 15000 ether);
-        _setPlanet(28, 4, 5, 11800 ether, 18000 ether);
-        _setPlanet(29, 4, 5, 11900 ether, 21000 ether);
-        _setPlanet(30, 4, 5, 12000 ether, 30000 ether);
+        // Zone 4: Planets 26-30, Suggested Rank S (5) — Target ROI ~3 days
+        _setPlanet(26, 4, 5, 11300 ether,  1065 ether);
+        _setPlanet(27, 4, 5, 11600 ether,  1090 ether);
+        _setPlanet(28, 4, 5, 11800 ether,  1110 ether);
+        _setPlanet(29, 4, 5, 11900 ether,  1110 ether);
+        _setPlanet(30, 4, 5, 12000 ether,  1125 ether);
     }
 
     function _setPlanet(uint8 id, uint8 tier, uint8 suggestedRank, uint256 reqMP, uint256 baseReward) internal {
