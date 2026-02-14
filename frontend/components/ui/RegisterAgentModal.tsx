@@ -8,7 +8,7 @@ interface RegisterAgentModalProps {
   onClose: () => void;
 }
 
-const CURL_COMMAND = `curl -sSL https://moltspace.xyz/SKILL.md | openclaw skill add`;
+const CURL_COMMAND = `curl -sSL https://monadai.space/SKILL.md | openclaw skill add`;
 
 const STEPS = [
   {

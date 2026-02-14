@@ -76,6 +76,7 @@ interface MonitorContextType {
     nft: Contract;
     expeditionManager: Contract;
   };
+  addresses: typeof CONTRACTS;
 }
 
 const MonitorContext = createContext<MonitorContextType | null>(null);
@@ -93,7 +94,7 @@ export function MonitorProvider({ children }: { children: React.ReactNode }) {
       expeditionManager: new Contract(CONTRACTS.expeditionManager, EXPEDITION_MANAGER_ABI, provider),
     };
 
-    return { provider, contracts };
+    return { provider, contracts, addresses: CONTRACTS };
   }, []);
 
   return (

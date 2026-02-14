@@ -32,7 +32,7 @@ describe("MintCost — 20 / 10 MON (Batch Mint)", function () {
     [owner, player1, player2, treasury] = await ethers.getSigners();
 
     const MoltSpaceNFT = await ethers.getContractFactory("MoltSpaceNFT");
-    nft = await MoltSpaceNFT.deploy("https://api.moltspace.xyz/{id}");
+    nft = await MoltSpaceNFT.deploy("https://api.monadai.space/{id}");
     await nft.waitForDeployment();
 
     const MothershipManager = await ethers.getContractFactory("MothershipManager");

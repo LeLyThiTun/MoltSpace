@@ -27,5 +27,8 @@ Thumbs.db
 # Claude Code
 .claude/
 
+# Vercel
+.vercel/
+
 # Misc
 nul

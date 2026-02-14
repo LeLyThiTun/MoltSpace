@@ -23,7 +23,7 @@ async function main() {
   // ═══════════════════════════════════════════
   console.log("[1/4] Deploying MoltSpaceNFT...");
   const MoltSpaceNFT = await hre.ethers.getContractFactory("MoltSpaceNFT");
-  const nft = await MoltSpaceNFT.deploy("https://api.moltspace.xyz/metadata/{id}.json");
+  const nft = await MoltSpaceNFT.deploy("https://api.monadai.space/metadata/{id}.json");
   await nft.waitForDeployment();
   const nftAddress = await nft.getAddress();
   console.log("  ✓ MoltSpaceNFT:", nftAddress);
@@ -154,7 +154,7 @@ NEXT_PUBLIC_RPC_URL=https://rpc.monad.xyz
   console.log("║  Verification Commands                        ║");
   console.log("╚═══════════════════════════════════════════════╝");
   console.log(`
-npx hardhat verify --network monad-mainnet ${nftAddress} "https://api.moltspace.xyz/metadata/{id}.json"
+npx hardhat verify --network monad-mainnet ${nftAddress} "https://api.monadai.space/metadata/{id}.json"
 
 npx hardhat verify --network monad-mainnet ${mothershipAddress} "${nftAddress}"
 

@@ -16,7 +16,7 @@ async function main() {
   // ═══════════════════════════════════════════
   console.log("[1/4] Deploying MoltSpaceNFT...");
   const MoltSpaceNFT = await hre.ethers.getContractFactory("MoltSpaceNFT");
-  const nft = await MoltSpaceNFT.deploy("https://api.moltspace.xyz/metadata/{id}.json");
+  const nft = await MoltSpaceNFT.deploy("https://api.monadai.space/metadata/{id}.json");
   await nft.waitForDeployment();
   const nftAddress = await nft.getAddress();
   console.log("  ✓ MoltSpaceNFT:", nftAddress);

@@ -376,7 +376,7 @@ export interface HeroStats {
 }
 
 export function useHeroStats() {
-  const { contracts, provider } = useMonitor();
+  const { contracts, provider, addresses } = useMonitor();
   const [stats, setStats] = useState<HeroStats>({ agentCount: 0, poolBalance: "0", latestAgent: null });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -398,10 +398,10 @@ export function useHeroStats() {
         }
       }
 
-      // Fetch ExpeditionManager pool balance
+      // Fetch ExpeditionManager pool balance using direct address (avoid ENS)
       let poolBalance = "0";
       try {
-        const bal = await provider.getBalance(await contracts.expeditionManager.getAddress());
+        const bal = await provider.getBalance(addresses.expeditionManager);
         poolBalance = formatEther(bal);
       } catch {
         // ignore
@@ -413,7 +413,7 @@ export function useHeroStats() {
     } finally {
       setIsLoading(false);
     }
-  }, [contracts, provider]);
+  }, [contracts, provider, addresses]);
 
   useEffect(() => {
     loadStats();

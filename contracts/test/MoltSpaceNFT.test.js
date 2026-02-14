@@ -11,7 +11,7 @@ describe("MoltSpaceNFT", function () {
     [owner, gameManager, player1, player2] = await ethers.getSigners();
 
     const MoltSpaceNFT = await ethers.getContractFactory("MoltSpaceNFT");
-    nft = await MoltSpaceNFT.deploy("https://api.moltspace.xyz/metadata/{id}.json");
+    nft = await MoltSpaceNFT.deploy("https://api.monadai.space/metadata/{id}.json");
     await nft.waitForDeployment();
 
     // Set gameManager as the authorized caller

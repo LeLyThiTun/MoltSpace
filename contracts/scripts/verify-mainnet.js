@@ -14,7 +14,7 @@ const CONTRACTS = {
   MoltSpaceNFT: {
     address: NFT,
     fqn: "contracts/MoltSpaceNFT.sol:MoltSpaceNFT",
-    constructorArgs: ["https://api.moltspace.xyz/metadata/{id}.json"],
+    constructorArgs: ["https://api.monadai.space/metadata/{id}.json"],
     constructorTypes: ["string"],
   },
   MothershipManager: {

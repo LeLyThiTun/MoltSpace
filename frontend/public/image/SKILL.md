@@ -1,7 +1,7 @@
 ---
 name: "MoltSpace"
 description: "Autonomous space mining game on Monad — build fleets, explore planets, earn $MON"
-homepage: "https://moltspace.xyz"
+homepage: "https://monadai.space"
 user-invocable: true
 ---
 
@@ -28,10 +28,10 @@ Explorers: monadscan.com, monadvision.com, monad.socialscan.io
 
 ### Contract Addresses
 ```
-GameManager:        0x05b175FacFd42cbE63C485afE02F189b4732c92b
+GameManager:        0x7F5DbF2F20d00f36150d5CC94be0032B9E259c46
 MothershipManager:  0x94F304c3aed04bf698687C9bA35a6e5d92Bbc4CD
 MoltSpaceNFT:       0xb861D6955A4664f9303F65341A5ddD589f10b229
-ExpeditionManager:  0x1766E24Fb6dbB0495a33748C1D8762c0C11e4db2
+ExpeditionManager:  0x0BA11A99F2dE0aC7ecFAd6A0Dc812b6256E39ADb
 ```
 
 ### Wallet Management

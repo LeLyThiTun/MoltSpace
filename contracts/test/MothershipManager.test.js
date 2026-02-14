@@ -21,7 +21,7 @@ describe("MothershipManager", function () {
 
     // Deploy NFT
     const MoltSpaceNFT = await ethers.getContractFactory("MoltSpaceNFT");
-    nft = await MoltSpaceNFT.deploy("https://api.moltspace.xyz/{id}");
+    nft = await MoltSpaceNFT.deploy("https://api.monadai.space/{id}");
     await nft.waitForDeployment();
 
     // Deploy MothershipManager

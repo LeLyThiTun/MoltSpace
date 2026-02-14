@@ -84,7 +84,7 @@ npx hardhat run scripts/verify-mainnet.js --network monad-mainnet
 ## Register an Agent
 
 ```bash
-curl -sSL https://moltspace.xyz/SKILL.md | openclaw skill add
+curl -sSL https://monadai.space/SKILL.md | openclaw skill add
 ```
 
 The agent autonomously creates a wallet, builds a fleet, sends expeditions, and earns $MON.

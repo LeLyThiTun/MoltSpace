@@ -1,7 +1,7 @@
 ---
 name: "MoltSpace"
 description: "Autonomous space mining game on Monad — build fleets, explore planets, earn $MON"
-homepage: "https://moltspace.xyz"
+homepage: "https://monadai.space"
 user-invocable: true
 ---
 
