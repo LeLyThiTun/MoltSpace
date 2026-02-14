@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
-import { JsonRpcProvider, Contract, Network } from "ethers";
+import { JsonRpcProvider, Contract, Network, getAddress } from "ethers";
 
 // ═══════════════════════════════════════════
 //  Contract ABIs (read-only view functions + events for scanning)
@@ -53,16 +53,16 @@ const EXPEDITION_MANAGER_ABI = [
   "event RewardClaimed(address indexed player, uint256 amount)",
 ];
 
-// Contract addresses
+// Contract addresses (trim to remove any trailing whitespace/newlines from env)
 const CONTRACTS = {
-  gameManager: process.env.NEXT_PUBLIC_GAME_MANAGER || "",
-  mothershipManager: process.env.NEXT_PUBLIC_MOTHERSHIP_MANAGER || "",
-  nft: process.env.NEXT_PUBLIC_NFT || "",
-  expeditionManager: process.env.NEXT_PUBLIC_EXPEDITION_MANAGER || "",
+  gameManager: (process.env.NEXT_PUBLIC_GAME_MANAGER || "").trim(),
+  mothershipManager: (process.env.NEXT_PUBLIC_MOTHERSHIP_MANAGER || "").trim(),
+  nft: (process.env.NEXT_PUBLIC_NFT || "").trim(),
+  expeditionManager: (process.env.NEXT_PUBLIC_EXPEDITION_MANAGER || "").trim(),
 };
 
 // Monad RPC (defaults to mainnet)
-const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL || "https://rpc.monad.xyz";
+const RPC_URL = (process.env.NEXT_PUBLIC_RPC_URL || "https://rpc.monad.xyz").trim();
 
 // ═══════════════════════════════════════════
 //  Monitor Context (read-only)
@@ -84,23 +84,31 @@ const MonitorContext = createContext<MonitorContextType | null>(null);
 function createMonitorValue() {
   // Monad network — disable ENS (not supported on chainId 143)
   const monadNetwork = new Network("monad", 143);
+
   const provider = new JsonRpcProvider(RPC_URL, monadNetwork, { staticNetwork: true });
 
-  // Patch resolveName to skip ENS for hex addresses (Monad has no ENS)
-  const _resolveName = provider.resolveName.bind(provider);
+  // Patch resolveName to ALWAYS return the input for hex addresses (bypass ENS entirely)
   provider.resolveName = async (name: string) => {
-    if (typeof name === "string" && name.startsWith("0x")) return name;
-    return _resolveName(name);
+    if (typeof name === "string" && name.startsWith("0x")) return getAddress(name);
+    return name;
+  };
+
+  // EIP-55 checksum all addresses so ethers v6 skips ENS resolution internally
+  const checksummed = {
+    gameManager: CONTRACTS.gameManager ? getAddress(CONTRACTS.gameManager) : "",
+    mothershipManager: CONTRACTS.mothershipManager ? getAddress(CONTRACTS.mothershipManager) : "",
+    nft: CONTRACTS.nft ? getAddress(CONTRACTS.nft) : "",
+    expeditionManager: CONTRACTS.expeditionManager ? getAddress(CONTRACTS.expeditionManager) : "",
   };
 
   const contracts = {
-    gameManager: new Contract(CONTRACTS.gameManager, GAME_MANAGER_ABI, provider),
-    mothershipManager: new Contract(CONTRACTS.mothershipManager, MOTHERSHIP_MANAGER_ABI, provider),
-    nft: new Contract(CONTRACTS.nft, NFT_ABI, provider),
-    expeditionManager: new Contract(CONTRACTS.expeditionManager, EXPEDITION_MANAGER_ABI, provider),
+    gameManager: new Contract(checksummed.gameManager, GAME_MANAGER_ABI, provider),
+    mothershipManager: new Contract(checksummed.mothershipManager, MOTHERSHIP_MANAGER_ABI, provider),
+    nft: new Contract(checksummed.nft, NFT_ABI, provider),
+    expeditionManager: new Contract(checksummed.expeditionManager, EXPEDITION_MANAGER_ABI, provider),
   };
 
-  return { provider, contracts, addresses: CONTRACTS };
+  return { provider, contracts, addresses: checksummed };
 }
 
 export function MonitorProvider({ children }: { children: React.ReactNode }) {
