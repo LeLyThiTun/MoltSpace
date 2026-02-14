@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import { JsonRpcProvider, Contract, Network } from "ethers";
 
 // ═══════════════════════════════════════════
@@ -81,24 +81,44 @@ interface MonitorContextType {
 
 const MonitorContext = createContext<MonitorContextType | null>(null);
 
+function createMonitorValue() {
+  // Monad network — disable ENS (not supported on chainId 143)
+  const monadNetwork = new Network("monad", 143);
+  const provider = new JsonRpcProvider(RPC_URL, monadNetwork, { staticNetwork: true });
+
+  // Patch resolveName to skip ENS for hex addresses (Monad has no ENS)
+  const _resolveName = provider.resolveName.bind(provider);
+  provider.resolveName = async (name: string) => {
+    if (typeof name === "string" && name.startsWith("0x")) return name;
+    return _resolveName(name);
+  };
+
+  const contracts = {
+    gameManager: new Contract(CONTRACTS.gameManager, GAME_MANAGER_ABI, provider),
+    mothershipManager: new Contract(CONTRACTS.mothershipManager, MOTHERSHIP_MANAGER_ABI, provider),
+    nft: new Contract(CONTRACTS.nft, NFT_ABI, provider),
+    expeditionManager: new Contract(CONTRACTS.expeditionManager, EXPEDITION_MANAGER_ABI, provider),
+  };
+
+  return { provider, contracts, addresses: CONTRACTS };
+}
+
 export function MonitorProvider({ children }: { children: React.ReactNode }) {
-  const value = useMemo(() => {
-    // Monad network — disable ENS (not supported on chainId 143)
-    const monadNetwork = new Network("monad", 143);
-    const provider = new JsonRpcProvider(RPC_URL, monadNetwork, { staticNetwork: true });
+  const [mounted, setMounted] = useState(false);
+  const valueRef = useRef<MonitorContextType | null>(null);
 
-    const contracts = {
-      gameManager: new Contract(CONTRACTS.gameManager, GAME_MANAGER_ABI, provider),
-      mothershipManager: new Contract(CONTRACTS.mothershipManager, MOTHERSHIP_MANAGER_ABI, provider),
-      nft: new Contract(CONTRACTS.nft, NFT_ABI, provider),
-      expeditionManager: new Contract(CONTRACTS.expeditionManager, EXPEDITION_MANAGER_ABI, provider),
-    };
-
-    return { provider, contracts, addresses: CONTRACTS };
+  useEffect(() => {
+    // Only create provider on client-side (skip SSG/SSR)
+    valueRef.current = createMonitorValue();
+    setMounted(true);
   }, []);
 
+  if (!mounted || !valueRef.current) {
+    return <div className="min-h-screen" />;
+  }
+
   return (
-    <MonitorContext.Provider value={value}>
+    <MonitorContext.Provider value={valueRef.current}>
       {children}
     </MonitorContext.Provider>
   );
