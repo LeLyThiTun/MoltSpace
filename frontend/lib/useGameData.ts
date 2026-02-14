@@ -101,9 +101,26 @@ export function useAgentList() {
     setError(null);
 
     try {
-      const agentList: AgentInfo[] = [];
+      // Step 1: Build a map of player → total rewards from all resolved expeditions
+      const earningsMap: Record<string, bigint> = {};
+      try {
+        const nextExpId = Number(await contracts.expeditionManager.nextExpeditionId());
+        for (let expId = 1; expId < nextExpId; expId++) {
+          try {
+            const exp = await contracts.expeditionManager.getExpedition(expId);
+            // status 2 = SUCCESS (resolved with reward)
+            if (Number(exp.status) === 2 && BigInt(exp.reward) > BigInt(0)) {
+              const player = (exp.player as string).toLowerCase();
+              earningsMap[player] = (earningsMap[player] || BigInt(0)) + BigInt(exp.reward);
+            }
+          } catch { continue; }
+        }
+      } catch {
+        // If expedition iteration fails, earnings stay at 0
+      }
 
-      // Iterate mothership IDs starting from 1 until we hit a non-existent one
+      // Step 2: Iterate mothership IDs to build agent list
+      const agentList: AgentInfo[] = [];
       for (let msId = 1; ; msId++) {
         try {
           const msView = await contracts.mothershipManager.getMothershipView(msId);
@@ -113,14 +130,9 @@ export function useAgentList() {
 
           const address = msView.owner as string;
 
-          // Get pending reward via view function (no events needed)
-          let totalEarned = "0";
-          try {
-            const pending = await contracts.expeditionManager.getPendingReward(address);
-            totalEarned = formatEther(BigInt(pending));
-          } catch {
-            // pending reward may fail if no interaction
-          }
+          // Look up total earned from expedition rewards map
+          const earned = earningsMap[address.toLowerCase()] || BigInt(0);
+          const totalEarned = formatEther(earned);
 
           agentList.push({
             address,

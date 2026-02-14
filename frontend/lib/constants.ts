@@ -41,8 +41,8 @@ export const MINT_COST = {
 };
 
 export const BURN_REFUND = {
-  SCOUT_SHIP: 6,  // MON (30%)
-  EXPLORER: 3,    // MON (30%)
+  SCOUT_SHIP: 4,  // MON (20%)
+  EXPLORER: 2,    // MON (20%)
 };
 
 // ═══════════════════════════════════════════
@@ -60,40 +60,40 @@ export interface PlanetData {
 }
 
 export const PLANETS: PlanetData[] = [
-  // Zone 1: Planets 1-10, Suggested Rank C
-  { id: 1,  zone: 1, suggestedRank: 2, requiredMP: 50,    baseReward: 5,     successRates: [85.0, 88.0, 91.0, 93.0, 97.0] },
-  { id: 2,  zone: 1, suggestedRank: 2, requiredMP: 80,    baseReward: 10,    successRates: [83.0, 86.0, 89.0, 91.0, 95.0] },
-  { id: 3,  zone: 1, suggestedRank: 2, requiredMP: 120,   baseReward: 15,    successRates: [81.0, 84.0, 87.0, 89.0, 93.0] },
-  { id: 4,  zone: 1, suggestedRank: 2, requiredMP: 170,   baseReward: 20,    successRates: [79.0, 82.0, 85.0, 87.0, 91.0] },
-  { id: 5,  zone: 1, suggestedRank: 2, requiredMP: 230,   baseReward: 30,    successRates: [77.0, 80.0, 83.0, 85.0, 89.0] },
-  { id: 6,  zone: 1, suggestedRank: 2, requiredMP: 300,   baseReward: 75,    successRates: [75.0, 78.0, 81.0, 83.0, 87.0] },
-  { id: 7,  zone: 1, suggestedRank: 2, requiredMP: 380,   baseReward: 90,    successRates: [73.0, 76.0, 79.0, 81.0, 85.0] },
-  { id: 8,  zone: 1, suggestedRank: 2, requiredMP: 480,   baseReward: 110,   successRates: [71.0, 74.0, 77.0, 79.0, 83.0] },
-  { id: 9,  zone: 1, suggestedRank: 2, requiredMP: 600,   baseReward: 135,   successRates: [69.0, 72.0, 75.0, 77.0, 81.0] },
-  { id: 10, zone: 1, suggestedRank: 2, requiredMP: 750,   baseReward: 165,   successRates: [67.0, 70.0, 73.0, 75.0, 79.0] },
-  // Zone 2: Planets 11-20, Suggested Rank B
-  { id: 11, zone: 2, suggestedRank: 3, requiredMP: 950,   baseReward: 400,   successRates: [60.0, 65.0, 67.0, 71.0, 74.0] },
-  { id: 12, zone: 2, suggestedRank: 3, requiredMP: 1200,  baseReward: 475,   successRates: [58.0, 63.0, 65.0, 69.0, 72.0] },
-  { id: 13, zone: 2, suggestedRank: 3, requiredMP: 1500,  baseReward: 565,   successRates: [56.0, 61.0, 63.0, 67.0, 70.0] },
-  { id: 14, zone: 2, suggestedRank: 3, requiredMP: 1900,  baseReward: 675,   successRates: [54.0, 59.0, 61.0, 65.0, 68.0] },
-  { id: 15, zone: 2, suggestedRank: 3, requiredMP: 2400,  baseReward: 800,   successRates: [52.0, 57.0, 59.0, 63.0, 66.0] },
-  { id: 16, zone: 2, suggestedRank: 3, requiredMP: 3000,  baseReward: 1900,  successRates: [50.0, 55.0, 57.0, 61.0, 64.0] },
-  { id: 17, zone: 2, suggestedRank: 3, requiredMP: 3700,  baseReward: 2250,  successRates: [48.0, 53.0, 55.0, 59.0, 62.0] },
-  { id: 18, zone: 2, suggestedRank: 3, requiredMP: 4500,  baseReward: 2700,  successRates: [46.0, 51.0, 53.0, 57.0, 60.0] },
-  { id: 19, zone: 2, suggestedRank: 3, requiredMP: 5400,  baseReward: 3250,  successRates: [44.0, 49.0, 51.0, 55.0, 58.0] },
-  { id: 20, zone: 2, suggestedRank: 3, requiredMP: 6400,  baseReward: 3900,  successRates: [42.0, 47.0, 49.0, 53.0, 56.0] },
-  // Zone 3: Planets 21-25, Suggested Rank A
-  { id: 21, zone: 3, suggestedRank: 4, requiredMP: 7500,  baseReward: 5000,  successRates: [41.0, 43.0, 47.0, 52.0, 55.0] },
-  { id: 22, zone: 3, suggestedRank: 4, requiredMP: 8500,  baseReward: 6000,  successRates: [41.0, 43.0, 47.0, 52.0, 55.0] },
-  { id: 23, zone: 3, suggestedRank: 4, requiredMP: 9500,  baseReward: 7000,  successRates: [41.0, 43.0, 47.0, 52.0, 55.0] },
-  { id: 24, zone: 3, suggestedRank: 4, requiredMP: 10500, baseReward: 8000,  successRates: [41.0, 43.0, 47.0, 52.0, 55.0] },
-  { id: 25, zone: 3, suggestedRank: 4, requiredMP: 11000, baseReward: 10000, successRates: [41.0, 43.0, 47.0, 52.0, 55.0] },
-  // Zone 4: Planets 26-30, Suggested Rank S
-  { id: 26, zone: 4, suggestedRank: 5, requiredMP: 11300, baseReward: 12000, successRates: [39.0, 40.0, 45.0, 50.0, 53.0] },
-  { id: 27, zone: 4, suggestedRank: 5, requiredMP: 11600, baseReward: 15000, successRates: [39.0, 40.0, 45.0, 50.0, 53.0] },
-  { id: 28, zone: 4, suggestedRank: 5, requiredMP: 11800, baseReward: 18000, successRates: [39.0, 40.0, 45.0, 50.0, 53.0] },
-  { id: 29, zone: 4, suggestedRank: 5, requiredMP: 11900, baseReward: 21000, successRates: [39.0, 40.0, 45.0, 50.0, 53.0] },
-  { id: 30, zone: 4, suggestedRank: 5, requiredMP: 12000, baseReward: 30000, successRates: [39.0, 40.0, 45.0, 50.0, 53.0] },
+  // Zone 1: Planets 1-10, Suggested Rank C (ROI ~7+ days)
+  { id: 1,  zone: 1, suggestedRank: 2, requiredMP: 50,    baseReward: 3.5,   successRates: [85.0, 88.0, 91.0, 93.0, 97.0] },
+  { id: 2,  zone: 1, suggestedRank: 2, requiredMP: 80,    baseReward: 3.5,   successRates: [83.0, 86.0, 89.0, 91.0, 95.0] },
+  { id: 3,  zone: 1, suggestedRank: 2, requiredMP: 120,   baseReward: 3.5,   successRates: [81.0, 84.0, 87.0, 89.0, 93.0] },
+  { id: 4,  zone: 1, suggestedRank: 2, requiredMP: 170,   baseReward: 7,     successRates: [79.0, 82.0, 85.0, 87.0, 91.0] },
+  { id: 5,  zone: 1, suggestedRank: 2, requiredMP: 230,   baseReward: 7,     successRates: [77.0, 80.0, 83.0, 85.0, 89.0] },
+  { id: 6,  zone: 1, suggestedRank: 2, requiredMP: 300,   baseReward: 10,    successRates: [75.0, 78.0, 81.0, 83.0, 87.0] },
+  { id: 7,  zone: 1, suggestedRank: 2, requiredMP: 380,   baseReward: 10,    successRates: [73.0, 76.0, 79.0, 81.0, 85.0] },
+  { id: 8,  zone: 1, suggestedRank: 2, requiredMP: 480,   baseReward: 13.5,  successRates: [71.0, 74.0, 77.0, 79.0, 83.0] },
+  { id: 9,  zone: 1, suggestedRank: 2, requiredMP: 600,   baseReward: 17,    successRates: [69.0, 72.0, 75.0, 77.0, 81.0] },
+  { id: 10, zone: 1, suggestedRank: 2, requiredMP: 750,   baseReward: 20,    successRates: [67.0, 70.0, 73.0, 75.0, 79.0] },
+  // Zone 2: Planets 11-20, Suggested Rank B (ROI ~7+ days)
+  { id: 11, zone: 2, suggestedRank: 3, requiredMP: 950,   baseReward: 40,    successRates: [60.0, 65.0, 67.0, 71.0, 74.0] },
+  { id: 12, zone: 2, suggestedRank: 3, requiredMP: 1200,  baseReward: 50,    successRates: [58.0, 63.0, 65.0, 69.0, 72.0] },
+  { id: 13, zone: 2, suggestedRank: 3, requiredMP: 1500,  baseReward: 60,    successRates: [56.0, 61.0, 63.0, 67.0, 70.0] },
+  { id: 14, zone: 2, suggestedRank: 3, requiredMP: 1900,  baseReward: 75,    successRates: [54.0, 59.0, 61.0, 65.0, 68.0] },
+  { id: 15, zone: 2, suggestedRank: 3, requiredMP: 2400,  baseReward: 95,    successRates: [52.0, 57.0, 59.0, 63.0, 66.0] },
+  { id: 16, zone: 2, suggestedRank: 3, requiredMP: 3000,  baseReward: 120,   successRates: [50.0, 55.0, 57.0, 61.0, 64.0] },
+  { id: 17, zone: 2, suggestedRank: 3, requiredMP: 3700,  baseReward: 145,   successRates: [48.0, 53.0, 55.0, 59.0, 62.0] },
+  { id: 18, zone: 2, suggestedRank: 3, requiredMP: 4500,  baseReward: 175,   successRates: [46.0, 51.0, 53.0, 57.0, 60.0] },
+  { id: 19, zone: 2, suggestedRank: 3, requiredMP: 5400,  baseReward: 210,   successRates: [44.0, 49.0, 51.0, 55.0, 58.0] },
+  { id: 20, zone: 2, suggestedRank: 3, requiredMP: 6400,  baseReward: 250,   successRates: [42.0, 47.0, 49.0, 53.0, 56.0] },
+  // Zone 3: Planets 21-25, Suggested Rank A (ROI ~3 days)
+  { id: 21, zone: 3, suggestedRank: 4, requiredMP: 7500,  baseReward: 715,   successRates: [41.0, 43.0, 47.0, 52.0, 55.0] },
+  { id: 22, zone: 3, suggestedRank: 4, requiredMP: 8500,  baseReward: 810,   successRates: [41.0, 43.0, 47.0, 52.0, 55.0] },
+  { id: 23, zone: 3, suggestedRank: 4, requiredMP: 9500,  baseReward: 910,   successRates: [41.0, 43.0, 47.0, 52.0, 55.0] },
+  { id: 24, zone: 3, suggestedRank: 4, requiredMP: 10500, baseReward: 1010,  successRates: [41.0, 43.0, 47.0, 52.0, 55.0] },
+  { id: 25, zone: 3, suggestedRank: 4, requiredMP: 11000, baseReward: 1060,  successRates: [41.0, 43.0, 47.0, 52.0, 55.0] },
+  // Zone 4: Planets 26-30, Suggested Rank S (ROI ~3 days)
+  { id: 26, zone: 4, suggestedRank: 5, requiredMP: 11300, baseReward: 1065,  successRates: [39.0, 40.0, 45.0, 50.0, 53.0] },
+  { id: 27, zone: 4, suggestedRank: 5, requiredMP: 11600, baseReward: 1090,  successRates: [39.0, 40.0, 45.0, 50.0, 53.0] },
+  { id: 28, zone: 4, suggestedRank: 5, requiredMP: 11800, baseReward: 1110,  successRates: [39.0, 40.0, 45.0, 50.0, 53.0] },
+  { id: 29, zone: 4, suggestedRank: 5, requiredMP: 11900, baseReward: 1110,  successRates: [39.0, 40.0, 45.0, 50.0, 53.0] },
+  { id: 30, zone: 4, suggestedRank: 5, requiredMP: 12000, baseReward: 1125,  successRates: [39.0, 40.0, 45.0, 50.0, 53.0] },
 ];
 
 export function getPlanet(planetId: number): PlanetData | undefined {

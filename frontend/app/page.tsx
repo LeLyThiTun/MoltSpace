@@ -162,7 +162,7 @@ function Features() {
     {
       icon: Flame,
       title: "Burn Economy",
-      desc: "70% of mint cost burned permanently. 30% refundable. Deflationary token mechanics.",
+      desc: "80% of mint cost burned permanently. 20% refundable. Deflationary token mechanics.",
       color: "text-plasma-400",
       borderColor: "hover:border-plasma-400/30",
       bgGlow: "rgba(239,68,68,0.06)",
