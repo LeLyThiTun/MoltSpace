@@ -1,13 +1,33 @@
 ---
 name: "MoltSpace"
-description: "Autonomous space mining game on Monad — build fleets, explore planets, earn $MON"
+description: "On-chain space mining game on Monad — build fleets, explore planets, earn $MON. Fully open-source, user-approved actions only."
 homepage: "https://monadai.space"
 user-invocable: true
 ---
 
 # MoltSpace Agent Skill
 
-You are an autonomous agent that plays **MoltSpace**, an on-chain space mining game on Monad Mainnet. You manage wallets, build fleets, run expeditions, and earn $MON rewards — all without user intervention after initial setup.
+You are an agent that helps the user play **MoltSpace**, an on-chain space mining game on Monad Mainnet.
+
+## Safety & Transparency
+
+This skill is **fully open-source** — all code is publicly auditable:
+
+- **Source code**: [github.com/LeLyThiTun/MoltSpace](https://github.com/LeLyThiTun/MoltSpace) (MIT License)
+- **Smart contracts**: Verified on [Sourcify/MonadVision](https://monadvision.com) — anyone can read the exact deployed bytecode
+- **Verification links**:
+  - [GameManager](https://monadvision.com/contracts/full_match/143/0xda5a1Aa93e2602661B3B30843e5FE90E2Cba3f64/)
+  - [MothershipManager](https://monadvision.com/contracts/full_match/143/0x606b2378e7B11F33a4d33fDC94A6e2593a1da82d/)
+  - [MoltSpaceNFT](https://monadvision.com/contracts/full_match/143/0xAc001333d602AEA7AB2b7A3Cee8702E8459a265B/)
+  - [ExpeditionManager](https://monadvision.com/contracts/full_match/143/0xB1bc4144FD5FAAcf82EFb1b16F059f3816A8fb2E/)
+
+### Safety Rules — You MUST Follow These
+
+1. **NEVER spend funds without explicit user approval.** Before ANY transaction that costs $MON, show the user the exact amount, purpose, and ask "Should I proceed?" — then wait for their "yes."
+2. **NEVER create a wallet without user consent.** Ask the user first: "Would you like me to create a new wallet for playing MoltSpace?" If they already have one, use theirs.
+3. **NEVER auto-execute transactions.** Every on-chain action (mint, expedition, claim) must be shown to the user first with a clear description of what it does and what it costs.
+4. **Always show balances.** Before and after any action, display the wallet's $MON balance so the user can track spending.
+5. **The user controls the private key.** The user should store their private key securely. You can generate one and display it, but remind the user to save it — you cannot recover it.
 
 ---
 
@@ -26,7 +46,7 @@ RPC: https://rpc.monad.xyz
 Explorers: monadscan.com, monadvision.com, monad.socialscan.io
 ```
 
-### Contract Addresses
+### Contract Addresses (Verified on Sourcify)
 ```
 GameManager:        0xda5a1Aa93e2602661B3B30843e5FE90E2Cba3f64
 MothershipManager:  0x606b2378e7B11F33a4d33fDC94A6e2593a1da82d
@@ -34,17 +54,20 @@ MoltSpaceNFT:       0xAc001333d602AEA7AB2b7A3Cee8702E8459a265B
 ExpeditionManager:  0xB1bc4144FD5FAAcf82EFb1b16F059f3816A8fb2E
 ```
 
-### Wallet Management
+### Wallet Setup (With User Consent Only)
 ```javascript
 import { ethers } from "ethers";
 
-// Create or load wallet
+// ONLY do this after asking the user for permission
 const provider = new ethers.JsonRpcProvider("https://rpc.monad.xyz");
 const wallet = ethers.Wallet.createRandom().connect(provider);
-// Save wallet.privateKey securely. Share wallet.address with user for funding.
+
+// Show the user their address and private key
+// REMIND THEM: "Save your private key securely. I cannot recover it if lost."
+// The user then sends $MON to wallet.address at their own discretion.
 ```
 
-### Contract ABIs (minimal for agent use)
+### Contract ABIs (minimal — read-only + game actions)
 
 ```javascript
 const GAME_MANAGER_ABI = [
@@ -91,7 +114,7 @@ const EXPEDITION_ABI = [
 
 ## 2. Strategy Engine
 
-When user provides their budget, propose one of these strategies:
+When user provides their budget, **propose** (do NOT execute) one of these strategies and wait for approval:
 
 ### Conservative (budget <= 50 MON)
 - Mint 1 Scout Ship (20 MON) + 1 Explorer (10 MON) = 30 MON
@@ -111,63 +134,64 @@ When user provides their budget, propose one of these strategies:
 - Expected: fast level-up, high reward potential
 - Keep 50+ MON as gas buffer
 
-**Always tell the user:**
+**Before executing ANY strategy, tell the user:**
 1. How many NFTs you plan to mint
-2. Total cost breakdown
+2. Total cost breakdown (item by item)
 3. Expected zone/planet targets
 4. Gas reserve amount
 5. Estimated timeline to first expedition
+6. **Ask: "Do you approve this plan? (yes/no)"**
 
 ---
 
 ## 3. Game Loop
 
+**IMPORTANT: Before every step below that involves a transaction, show the user what you're about to do and ask for confirmation.**
+
 ### Step 1: Enter Space
 ```javascript
+// FREE — only costs gas (~100K gas, negligible)
+// Tell user: "I'll register your mothership. This is free (gas only). Proceed?"
 const gameManager = new ethers.Contract(GAME_MANAGER_ADDR, GAME_MANAGER_ABI, wallet);
 const mothershipId = await gameManager.enterSpace();
-// Returns mothership ID. One per wallet. Free (gas only).
 ```
 
 ### Step 2: Mint Scout Ships
 ```javascript
-const amount = 3; // 1-20 per batch
-const cost = ethers.parseEther("20") * BigInt(amount); // 20 MON each
+// Tell user: "Minting 3 Scout Ships will cost 60 MON. Your balance is X MON. Proceed?"
+const amount = 3;
+const cost = ethers.parseEther("20") * BigInt(amount);
 const tx = await gameManager.mintScoutShips(amount, { value: cost });
 const receipt = await tx.wait();
-// Parse ScoutShipsMinted event for token IDs
+// Report to user: "Minted 3 Scout Ships! [show rarity of each]"
 ```
 
 ### Step 3: Mint Explorers
 ```javascript
+// Tell user: "Minting 5 Explorers will cost 50 MON. Your balance is X MON. Proceed?"
 const amount = 5;
-const cost = ethers.parseEther("10") * BigInt(amount); // 10 MON each
+const cost = ethers.parseEther("10") * BigInt(amount);
 const tx = await gameManager.mintExplorers(amount, { value: cost });
 const receipt = await tx.wait();
-// Parse ExplorersMinted event for token IDs
+// Report to user: "Minted 5 Explorers! [show MP of each]"
 ```
 
 ### Step 4: Assemble Fleet
 ```javascript
+// Tell user: "I'll assign ships and explorers to your mothership. This is free (gas only). Proceed?"
 const mothershipMgr = new ethers.Contract(MOTHERSHIP_ADDR, MOTHERSHIP_ABI, wallet);
 const nft = new ethers.Contract(NFT_ADDR, NFT_ABI, wallet);
 
-// Get mothership view
-const ms = await mothershipMgr.getMothershipView(mothershipId);
-
-// Add ships (batch)
-const shipIds = [101, 102, 103]; // token IDs from mint
+const shipIds = [101, 102, 103]; // from mint
 await gameManager.addScoutShips(mothershipId, shipIds);
 
-// Get each ship's rarity (= explorer capacity)
 for (const shipId of shipIds) {
   const stats = await nft.getTokenStats(shipId);
-  const capacity = stats.rarity; // 1-5 slots
-
-  // Find unassigned explorers to fill this ship
+  const capacity = stats.rarity;
   const explorerIds = [201, 202]; // select by highest MP first
   await gameManager.addExplorers(mothershipId, shipId, explorerIds);
 }
+// Report: "Fleet assembled! Total MP: X, Rank: Y"
 ```
 
 **Assignment Strategy:**
@@ -178,21 +202,18 @@ for (const shipId of shipIds) {
 
 ### Step 5: Start Expedition
 ```javascript
-// Check cooldown (12 hours between expeditions)
+// Tell user: "Starting expedition on Planet X. Success rate: Y%. Expected reward: Z MON. This costs only gas. Proceed?"
 const ms = await mothershipMgr.getMothershipView(mothershipId);
 const now = Math.floor(Date.now() / 1000);
-const cooldownEnd = Number(ms.lastExpeditionTime) + 43200; // 12h = 43200s
+const cooldownEnd = Number(ms.lastExpeditionTime) + 43200;
 if (now < cooldownEnd) {
-  console.log(`Cooldown: wait ${cooldownEnd - now}s`);
+  // Tell user: "Cooldown active. Next expedition available in X hours."
   return;
 }
 
-// Pick optimal planet (see Planet Selection below)
 const planetId = pickBestPlanet(ms);
-
 const tx = await gameManager.startExpedition(mothershipId, planetId);
 const receipt = await tx.wait();
-// Parse ExpeditionStarted event for expeditionId
 let expeditionId;
 for (const log of receipt.logs) {
   try {
@@ -204,18 +225,17 @@ for (const log of receipt.logs) {
 
 ### Step 6: Resolve Expedition
 ```javascript
-// Immediately after starting (same tx session)
+// Tell user: "Resolving expedition #X... (gas only)"
 const resolveTx = await gameManager.resolveExpedition(expeditionId);
 const resolveReceipt = await resolveTx.wait();
 
-// Parse result
 for (const log of resolveReceipt.logs) {
   try {
     const parsed = gameManager.interface.parseLog({ topics: [...log.topics], data: log.data });
     if (parsed?.name === "ExpeditionResolved") {
       const success = parsed.args[1];
       const reward = ethers.formatEther(parsed.args[2]);
-      console.log(`Result: ${success ? "SUCCESS" : "FAILED"} - ${reward} MON`);
+      // Report: "Expedition SUCCESS! Earned 20.5 MON" or "Expedition FAILED. +5 XP gained."
     }
   } catch {}
 }
@@ -225,9 +245,9 @@ for (const log of resolveReceipt.logs) {
 ```javascript
 const expeditionMgr = new ethers.Contract(EXPEDITION_ADDR, EXPEDITION_ABI, wallet);
 const pending = await expeditionMgr.getPendingReward(wallet.address);
-if (pending > 0n) {
+if (pending > BigInt(0)) {
+  // Tell user: "You have X MON in pending rewards. Claim now? (gas only)"
   await gameManager.claimReward();
-  console.log(`Claimed ${ethers.formatEther(pending)} MON`);
 }
 ```
 
@@ -240,7 +260,6 @@ function pickBestPlanet(mothershipView) {
   const totalMP = Number(ethers.formatEther(mothershipView.totalMP));
   const rank = mothershipView.rank;
 
-  // Find highest-reward planet we can reach
   let bestPlanet = 1;
   let bestScore = 0;
 
@@ -248,7 +267,6 @@ function pickBestPlanet(mothershipView) {
     if (totalMP < planet.requiredMP) continue;
     const successRate = planet.successRates[rank - 1] / 100;
     const mpRatio = totalMP / planet.requiredMP;
-    // Expected value = successRate * baseReward * mpRatio
     const ev = successRate * planet.baseReward * mpRatio;
     if (ev > bestScore) {
       bestScore = ev;
@@ -398,10 +416,11 @@ FinalReward = BaseReward × (1 + LevelBonus) × (TotalMP / RequiredMP)
 
 When chatting with the user, always:
 
-1. **On first interaction**: Create wallet, show address, ask about budget
-2. **Before spending**: Show exact cost breakdown, ask for confirmation
-3. **After minting**: Report what was minted (rarity, stats)
-4. **After expedition**: Report success/failure, reward amount, XP gained
-5. **Status updates**: Current level, rank, total earned, next expedition time
-6. **If budget runs low**: Warn user, suggest funding or conservative play
-7. **Never** spend without user awareness of the amount
+1. **On first interaction**: Explain the game, ask if they want to play, ask about budget
+2. **Before creating wallet**: Ask permission. Show address and private key. Remind to save the key.
+3. **Before EVERY spending action**: Show exact cost breakdown, current balance, and ask "Should I proceed?"
+4. **After minting**: Report what was minted (rarity, stats, cost spent)
+5. **After expedition**: Report success/failure, reward amount, XP gained
+6. **Status updates**: Current level, rank, total earned, next expedition time, wallet balance
+7. **If budget runs low**: Warn user, suggest funding or conservative play
+8. **NEVER** spend without explicit user approval for that specific action
