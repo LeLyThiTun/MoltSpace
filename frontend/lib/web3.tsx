@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useMemo } from "react";
-import { JsonRpcProvider, Contract } from "ethers";
+import { JsonRpcProvider, Contract, Network } from "ethers";
 
 // ═══════════════════════════════════════════
 //  Contract ABIs (read-only view functions + events for scanning)
@@ -82,7 +82,9 @@ const MonitorContext = createContext<MonitorContextType | null>(null);
 
 export function MonitorProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo(() => {
-    const provider = new JsonRpcProvider(RPC_URL);
+    // Monad network — disable ENS (not supported on chainId 143)
+    const monadNetwork = new Network("monad", 143);
+    const provider = new JsonRpcProvider(RPC_URL, monadNetwork, { staticNetwork: true });
 
     const contracts = {
       gameManager: new Contract(CONTRACTS.gameManager, GAME_MANAGER_ABI, provider),
